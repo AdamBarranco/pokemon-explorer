@@ -1,4 +1,14 @@
-
+import "../app/globals.css";
+import { Separator } from "@/components/ui/separator"
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 export default function LandingPage() {
   return (
@@ -10,6 +20,22 @@ export default function LandingPage() {
             <h2 className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
                 Search and find Pokémon 
             </h2>
+            <Separator className="my-8 w-full" />
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Card Title</CardTitle>
+                        <CardDescription>Card Description</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        Card Content
+                    </CardContent>
+                    <CardFooter>
+                        Card Footer
+                    </CardFooter>
+                </Card>
+            </div>
+
         </main>
     </div>
   );
