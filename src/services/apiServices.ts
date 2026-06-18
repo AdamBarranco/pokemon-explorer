@@ -8,3 +8,5 @@ async function fetchPokemonData(): Promise<any> {
     const data = await response.json();
     return data;
 }
+
+export { fetchPokemonData };
