@@ -2,8 +2,9 @@ import "../app/globals.css";
 import { Separator } from "@/components/ui/separator"
 import CardComponent from "../components/card/cardComponent"
 import {fetchPokemonDataFromList} from "../components/coreComponent"
-import {Button} from "@/components/ui/button";
-import {PrevBtn, NextBtn} from "../components/button/buttonComponent"
+import {BackBtn, NextBtn, SearchBtn} from "../components/button/buttonComponent"
+import {InputComponent} from "../components/input/inputComponent"
+import {inter} from "../utils/fontHelper"
 
 const {pokemonList, loading} = await fetchPokemonDataFromList();
 console.log("Fetched Pokémon data from the list:", pokemonList);
@@ -17,10 +18,10 @@ export default function LandingPage() {
         <main className="flex flex-col w-full max-w-6xl mx-auto py-16 px-6 bg-white dark:bg-black">
 
             <div className="flex flex-col justify-center gap-2 text-center">
-            <h1 className="text-6xl leading-[78px] font-semibold text-[#181A1B] dark:text-zinc-50 ">
+            <h1 className={`${inter.className} text-6xl leading-[78px] font-semibold text-[#181A1B] dark:text-zinc-50 `}>
                 Pokémon Browser
             </h1>
-            <h2 className="text-lg text-zinc-600 dark:text-zinc-400">
+            <h2 className={`${inter.className} text-lg text-zinc-600 dark:text-zinc-400`}>
                 Search and find Pokémon 
             </h2>
             </div>
@@ -28,12 +29,12 @@ export default function LandingPage() {
             <Separator className="my-8" />
 
             <div className="flex w-full justify-between items-center">
-            <h2 className=" text-[30px] font-semibold tracking-[-0.025em] ">
+            <h2 className={`${inter.className} text-[30px] font-semibold tracking-[-0.025em] `}>
                 Explore Pokémon
             </h2>
             <div className="flex  gap-3">
-                <Button variant="outline" >Find Pokémon</Button>
-                <Button variant="outline" >Search</Button>
+                <InputComponent />
+                <SearchBtn />
             </div>
             </div>
 
@@ -52,7 +53,7 @@ export default function LandingPage() {
               }
             </div>
             <div className="flex  gap-3 justify-center mt-8">
-                <PrevBtn />
+                <BackBtn />
                 <NextBtn />
             </div>
         </main>

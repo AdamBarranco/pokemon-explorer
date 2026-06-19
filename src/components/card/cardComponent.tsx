@@ -1,13 +1,9 @@
 
-import { Separator } from "@/components/ui/separator"
+import {inter} from "../../utils/fontHelper"
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
 
 // custom component to display a card with pokemon information and to figma design
@@ -22,16 +18,18 @@ type CardComponentProps = {
 
 export default function CardComponent({ name, imageUrl, number, type }: CardComponentProps) {
     return (
-        <Card className="shadow-md">
+        <Card className="shadow-md" onClick={() => {
+            // TODO handle card click event
+        }}>
             
                 <img src={imageUrl} alt={name} className="object-cover" />
             
             <CardHeader>
-                <h3 className="text-lg font-semibold">{name}</h3>
-                <p className="text-sm font-medium">#{number}</p>
+                <h3 className={`${inter.className} text-lg font-semibold`}>{name}</h3>
+                <p className={`${inter.className} text-sm font-medium`}>#{number}</p>
             </CardHeader>
             <CardContent>
-                <p>{type}</p>
+                <p className={`${inter.className} bg-[#181A1B] text-white px-2 py-1 rounded`}>{type}</p>
             </CardContent>
         </Card>
     );

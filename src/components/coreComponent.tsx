@@ -66,6 +66,6 @@ async function fetchPokemonDataFromList(): Promise<any> {
         // setLoading(false);
     }
     return {pokemonList, loading: false};
-}
+};
 
 export { loadList, displayPokemonDetails, fetchPokemonDataFromList };
