@@ -27,16 +27,33 @@ async function loadList(): Promise<any> {
 // Function to display details of a specific Pokemon and add data to state and loading management
 async function displayPokemonDetails(pokemonName: string): Promise<any> {
 
-    const pokemonDetails: any[] = [];
+    const pokemon = await fetchPokemonData(pokemonName);
     try {
-        const data = await fetchPokemonData(pokemonName);
-        pokemonDetails.push(data);
+        return {
+            name: pokemon.name,
+            imageUrl: pokemon.sprites.front_default,
+            number: pokemon.id,
+            type: pokemon.types.map((typeInfo: any) => typeInfo.type.name).join(", "),
+
+            weight: pokemon.weight,
+            height: pokemon.height,
+            abilities: pokemon.abilities.map((abilityInfo: any) => abilityInfo.ability.name).join(", "),
+            gender: pokemon.gender,
+
+            hp: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "hp")?.base_stat,
+            attack: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "attack")?.base_stat,
+            defense: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "defense")?.base_stat,
+            specialAttack: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "special-attack")?.base_stat,
+            specialDefense: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "special-defense")?.base_stat,
+            speed: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "speed")?.base_stat,
+
+        }
+        
     }
     catch (error) {
         console.error(`Error fetching details for Pokémon ${pokemonName}:`, error);
         throw error;
     }
-    return {pokemonDetails};
 }
 
 async function fetchPokemonDataFromList(): Promise<any> {
