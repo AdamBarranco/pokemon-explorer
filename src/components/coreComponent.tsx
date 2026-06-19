@@ -27,20 +27,16 @@ async function loadList(): Promise<any> {
 // Function to display details of a specific Pokemon and add data to state and loading management
 async function displayPokemonDetails(pokemonName: string): Promise<any> {
 
-    const [pokemonDetails, setPokemonDetails] = useState<any>(null);
-    const [loading, setLoading] = useState<boolean>(true);
+    const pokemonDetails: any[] = [];
     try {
         const data = await fetchPokemonData(pokemonName);
-        setPokemonDetails(data);
+        pokemonDetails.push(data);
     }
     catch (error) {
         console.error(`Error fetching details for Pokémon ${pokemonName}:`, error);
         throw error;
     }
-    finally {
-        setLoading(false);
-    }
-    return {pokemonDetails, loading};
+    return {pokemonDetails};
 }
 
 async function fetchPokemonDataFromList(): Promise<any> {
@@ -55,7 +51,7 @@ async function fetchPokemonDataFromList(): Promise<any> {
             const pokemonData = await fetchPokemonData(pokemon.name);
             pokemon.imageUrl = pokemonData.sprites.front_default;
             pokemon.number = pokemonData.id;
-            pokemon.type = pokemonData.types.map((typeInfo: any) => typeInfo.type.name).join(", ");
+            pokemon.type = pokemonData.types.map((typeInfo: any) => typeInfo.type.name);
         }
     }
     catch (error) {

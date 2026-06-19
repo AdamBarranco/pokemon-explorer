@@ -19,8 +19,19 @@ interface SearchButtonProps {
 
 export function BackBtn({ page, setPage }: ButtonProps) {
  
+  if(page === 0) {
     return (
-    <Button disabled={page <= 1 || page === 0} variant="outline" className={`${inter.className} bg-[#181A1B] text-white flex items-center gap-2 shadow-md rounded-md border px-3 py-1`} onClick={() => {
+      <Button variant="outline" className={`${inter.className} bg-[#181A1B] text-white flex items-center gap-2 shadow-md rounded-md border px-3 py-1`} onClick={() => {
+        setPage(1);
+        console.log("Back button clicked. Current page:", page);
+      }}>
+        <ArrowLeftIcon className="w-4 h-4" />
+      Back
+    </Button>
+    );
+  }
+    return (
+    <Button disabled={page <= 1} variant="outline" className={`${inter.className} bg-[#181A1B] text-white flex items-center gap-2 shadow-md rounded-md border px-3 py-1`} onClick={() => {
       if (page > 1) {
         setPage(page - 1);
       }
