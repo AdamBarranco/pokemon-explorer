@@ -7,11 +7,15 @@ import {
 import {inter} from "../../utils/fontHelper"
 import {SearchBtn} from "../button/buttonComponent"
 
+interface InputComponentProps {
+  value: string;
+  onChange: (value: string) => void;
+}
 
 // custom component to display an input field with placeholder text and to figma design
-export function InputComponent() {
+export function InputComponent({ value, onChange }: InputComponentProps) {
   return (
-    <Input type="text" placeholder="Find Pokémon" className={`${inter.className} rounded-md border px-3 py-1`} />
+    <Input type="text" placeholder="Find Pokémon" className={`${inter.className} rounded-md border px-3 py-1`} value={value} onChange={(e) => onChange(e.target.value)} />
   );
 }
 
@@ -23,15 +27,6 @@ export function InputErrorComponent() {
       <FieldDescription>
         Cannot find Pokémon.
       </FieldDescription>
-    </Field>
-  );
-}
-
-export function InputInlineComponent() {
-  return (
-    <Field>
-      <InputComponent />
-      <SearchBtn />
     </Field>
   );
 }

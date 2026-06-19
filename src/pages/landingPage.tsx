@@ -13,6 +13,10 @@ console.log("Fetched Pokémon data from the list:", pokemonList);
 
 export default function LandingPage() {
   const [page, setPage] = useState(1);
+  const [pokemonListState, setPokemonListState] = useState(pokemonList);
+  const [pokemonName, setPokemonName] = useState("");
+  const [searchPokemonList, setSearchPokemonList] = useState<any[]>([]);
+  console.log("Current Pokémon list state:", pokemonListState);
 
   return (
     <div className="flex flex-col w-full min-h-screen gap-12 opacity-100">
@@ -34,14 +38,14 @@ export default function LandingPage() {
                 Explore Pokémon
             </h2>
             <div className="flex  gap-3">
-                <InputComponent />
-                <SearchBtn />
+                <InputComponent value={pokemonName} onChange={setPokemonName} />
+                <SearchBtn pokemonName={pokemonName} pokemonListState={pokemonListState} searchPokemonList={searchPokemonList} setSearchPokemonList={setSearchPokemonList} page={page} setPage={setPage} />
             </div>
             </div>
 
             <div className="grid grid-cols-4 gap-4 mt-8">
               {
-                handleCardLoad(pokemonList, loading, page)
+                page === 0 ? handleCardLoad(searchPokemonList, loading, page) : handleCardLoad(pokemonListState, loading, page)
               }
             </div>
 
@@ -52,6 +56,7 @@ export default function LandingPage() {
         </main>
     </div>
   );
+
 }
 
 function handleCardLoad(list: any[], loading: boolean = false, page: number) {
@@ -59,30 +64,19 @@ function handleCardLoad(list: any[], loading: boolean = false, page: number) {
     if (loading === true) {
       return <SpinnerComponent />;
     }
+    if( page === 0) {
+      return list.map((pokemon: any) => {
+        return returnCardDetail(pokemon);
+      })
+    }
     if (page === 1) {
     return list.slice(0, 12).map((pokemon: any) => {
-      return (
-         <CardComponent
-                    key={pokemon.name}
-                    name={pokemon.name}
-                    imageUrl={pokemon.imageUrl}
-                    number={pokemon.number}
-                    type={pokemon.type}
-                  />
-      )
+      return returnCardDetail(pokemon);
     })
     }
     else if (page === 2) {
       return list.slice(12, 24).map((pokemon: any) => {
-        return (
-            <CardComponent
-                      key={pokemon.name}
-                      name={pokemon.name}
-                      imageUrl={pokemon.imageUrl} 
-                      number={pokemon.number}
-                      type={pokemon.type}
-                    />
-        )
+       return returnCardDetail(pokemon);
       })
     }
   }
@@ -92,8 +86,17 @@ function handleCardLoad(list: any[], loading: boolean = false, page: number) {
   return null;
 }
 
-
-
+export function returnCardDetail(pokemon: any) {
+  return (
+  <CardComponent
+    key={pokemon.name}
+    name={pokemon.name}
+    imageUrl={pokemon.imageUrl}
+    number={pokemon.number}
+    type={pokemon.type}
+  />
+  )
+}
 
 
         
