@@ -5,13 +5,14 @@ import {fetchPokemonDataFromList} from "../components/coreComponent"
 import {BackBtn, NextBtn, SearchBtn} from "../components/button/buttonComponent"
 import {InputComponent} from "../components/input/inputComponent"
 import {inter} from "../utils/fontHelper"
+import SpinnerComponent from "../components/spinner/spinnerComponent"
+import { useState } from "react";
 
 const {pokemonList, loading} = await fetchPokemonDataFromList();
 console.log("Fetched Pokémon data from the list:", pokemonList);
 
 export default function LandingPage() {
-
-    
+  const [page, setPage] = useState(1);
 
   return (
     <div className="flex flex-col w-full min-h-screen gap-12 opacity-100">
@@ -21,7 +22,7 @@ export default function LandingPage() {
             <h1 className={`${inter.className} text-6xl leading-[78px] font-semibold text-[#181A1B] dark:text-zinc-50 `}>
                 Pokémon Browser
             </h1>
-            <h2 className={`${inter.className} text-lg text-zinc-600 dark:text-zinc-400`}>
+            <h2 className={`${inter.className} text-3xl text-zinc-600 dark:text-zinc-400`}>
                 Search and find Pokémon 
             </h2>
             </div>
@@ -39,27 +40,60 @@ export default function LandingPage() {
             </div>
 
             <div className="grid grid-cols-4 gap-4 mt-8">
-
               {
-                pokemonList.slice(0, 12).map((pokemon: any) => (
-                  <CardComponent
+                handleCardLoad(pokemonList, loading, page)
+              }
+            </div>
+
+            <div className="flex  gap-3 justify-center mt-8">
+                <BackBtn page={page} setPage={setPage} />
+                <NextBtn page={page} setPage={setPage} />
+            </div>
+        </main>
+    </div>
+  );
+}
+
+function handleCardLoad(list: any[], loading: boolean = false, page: number) {
+  try {
+    if (loading === true) {
+      return <SpinnerComponent />;
+    }
+    if (page === 1) {
+    return list.slice(0, 12).map((pokemon: any) => {
+      return (
+         <CardComponent
                     key={pokemon.name}
                     name={pokemon.name}
                     imageUrl={pokemon.imageUrl}
                     number={pokemon.number}
                     type={pokemon.type}
                   />
-                ))
-              }
-            </div>
-            <div className="flex  gap-3 justify-center mt-8">
-                <BackBtn />
-                <NextBtn />
-            </div>
-        </main>
-    </div>
-  );
+      )
+    })
+    }
+    else if (page === 2) {
+      return list.slice(12, 24).map((pokemon: any) => {
+        return (
+            <CardComponent
+                      key={pokemon.name}
+                      name={pokemon.name}
+                      imageUrl={pokemon.imageUrl} 
+                      number={pokemon.number}
+                      type={pokemon.type}
+                    />
+        )
+      })
+    }
+  }
+  catch (error) {
+    console.error("Error loading Pokémon cards:", error);
+  }
+  return null;
 }
+
+
+
 
 
         
