@@ -21,7 +21,7 @@ export default function CardComponent({ name, imageUrl, number, type }: CardComp
     const router = useRouter();
     return (
         <Card className="shadow-md" onClick={() => {
-            router.push(`/pokemonDetailsPage?pokemonName=${encodeURIComponent(name)}`);
+            router.push(`/pokemonDetailsPage?pokemonName=${encodeURIComponent(name)}&pokemonId=${number}`);
         }}>
             
                 <img src={imageUrl} alt={name} className="object-cover" />

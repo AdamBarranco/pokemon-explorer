@@ -24,16 +24,16 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 
-Project Setup & Running Instructions
+## Project Setup & Running Instructions
 
-Design and Component Decisions
+## Design and Component Decisions
 
-State Management Approach
+## State Management Approach
 
-API Interaction Strategy
+## API Interaction Strategy
 
-Challenges Encountered & Solutions
+## Challenges Encountered & Solutions
 
-Bonus Feature Implementation 
+## Bonus Feature Implementation 
 
-Self-Reflection & Potential Improvements (Optional but Valued)
+## Self-Reflection & Potential Improvements (Optional but Valued)

@@ -1,7 +1,7 @@
 "user client";
 
 import {useState} from "react";
-import {fetchPokemonData, fetchPokemonList} from "../services/apiServices";
+import {fetchCategory, fetchPokemonData, fetchPokemonGender, fetchPokemonList} from "../services/apiServices";
 
 
 // Function to load the list of Pokemon and add data to state and loading management
@@ -25,9 +25,11 @@ async function loadList(): Promise<any> {
 }
 
 // Function to display details of a specific Pokemon and add data to state and loading management
-async function displayPokemonDetails(pokemonName: string): Promise<any> {
+async function displayPokemonDetails(pokemonName: string, pokemonId: number): Promise<any> {
 
     const pokemon = await fetchPokemonData(pokemonName);
+    const gender = await fetchPokemonGender(pokemonId);
+    const category = await fetchCategory(pokemonId);
     try {
         return {
             name: pokemon.name,
@@ -38,7 +40,8 @@ async function displayPokemonDetails(pokemonName: string): Promise<any> {
             weight: pokemon.weight,
             height: pokemon.height,
             abilities: pokemon.abilities.map((abilityInfo: any) => abilityInfo.ability.name).join(", "),
-            gender: pokemon.gender,
+            gender: gender,
+            category: category,
 
             hp: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "hp")?.base_stat,
             attack: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "attack")?.base_stat,

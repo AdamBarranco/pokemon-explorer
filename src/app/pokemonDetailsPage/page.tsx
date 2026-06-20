@@ -6,6 +6,7 @@ import {useSearchParams} from "next/navigation";
 import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator"
 import {returnBtn} from "../../components/button/buttonComponent"
+import {sideCard} from "../../components/card/statsCardComponent"
 
 export default function PokemonDetailsPage() {
 
@@ -21,27 +22,32 @@ export default function PokemonDetailsPage() {
     );
   }
   const pokemonName = searchParams.get("pokemonName");
+  const pokemonId = Number(searchParams.get("pokemonId"));
 
   useEffect(() => {
-    async function fetchData(pokemonName: string | null) {
+    async function fetchData(pokemonName: string | null, pokemonId: number) {
         setLoading(true);
         const timer = setTimeout(() => {
         setLoading(false);
-        }, 1000);
+        }, 1000); // delay to show the spinner - remove for production
 
         try{
-            const data = await displayPokemonDetails(pokemonName || "");
+            if(pokemonName === null) {
+                throw new Error("Invalid Pokémon name or ID");
+            }
+            const data = await displayPokemonDetails(pokemonName, pokemonId);
             setPokemonDetails(data);
         } catch (error) {
             console.error(`Error displaying details for Pokémon ${pokemonName}:`, error);
         }finally {
+            console.log("Pokemon details fetched:", pokemonDetails);
             clearTimeout(timer);
             setLoading(false);
         }
     }
-    fetchData(pokemonName);
+    fetchData(pokemonName, pokemonId);
     
-  }, [pokemonName]);
+  }, [pokemonName, pokemonId]);
 
 
   return (
@@ -68,13 +74,16 @@ export default function PokemonDetailsPage() {
 
                     </div>
                 </div>
-                <div className="flex flex-col items-center gap-2 mt-4">
+                <div className="grid items-center gap-2 mt-4">
             
-                <div className="flex flex-col items-center gap-2 mt-4">
-                    <p className="text-sm font-medium">Type: {pokemonDetails?.type}</p>
-                    <p className="text-sm font-medium">Height: {pokemonDetails?.height}</p>
-                    <p className="text-sm font-medium">Weight: {pokemonDetails?.weight}</p>
-                    <p className="text-sm font-medium">Abilities: {pokemonDetails?.ability}</p>
+                {/* left side */}
+                <div className="grid grid-cols-1 gap-2 mt-4">
+                    {sideCard({height: pokemonDetails?.height, category: pokemonDetails?.category, weight: pokemonDetails?.weight, gender: pokemonDetails?.gender})} 
+                </div>
+
+                {/* right side */}
+                <div className="grid grid-cols-2 gap-2 mt-4">
+
                 </div>
                 </div>
                 <div className="flex flex-col items-center gap-2 mt-4">
