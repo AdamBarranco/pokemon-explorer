@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { inter } from "../../utils/fontHelper"
-import { returnCardDetail } from "@/src/pages/landingPage";
 import { redirect } from "next/navigation";
+import { useState } from "react";
 
 interface ButtonProps {
   page: number;
@@ -15,7 +15,8 @@ interface SearchButtonProps {
   setSearchPokemonList?: React.Dispatch<React.SetStateAction<any[]>>;
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-
+  notFound: boolean;
+  setNotFound: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function BackBtn({ page, setPage }: ButtonProps) {
@@ -59,7 +60,7 @@ export function NextBtn({ page, setPage }: ButtonProps) {
   );
 }
 
-export function SearchBtn({ pokemonName, pokemonListState, searchPokemonList, setSearchPokemonList, page, setPage }: SearchButtonProps) {
+export function SearchBtn({ pokemonName, pokemonListState, searchPokemonList, setSearchPokemonList, page, setPage, notFound, setNotFound }: SearchButtonProps) {
   return (
     <Button variant="outline" className={`${inter.className} bg-[#181A1B] text-white flex items-center shadow-md rounded-md gap-2 px-4 py-2`}
 
@@ -71,9 +72,12 @@ export function SearchBtn({ pokemonName, pokemonListState, searchPokemonList, se
 
           if (foundPokemon && setSearchPokemonList) {
             setSearchPokemonList([foundPokemon]);
+            setNotFound(false);
             setPage(0);
+          } else if (!foundPokemon && setSearchPokemonList) {
+            setNotFound(true);
           }
-          console.log("Search button clicked. Current Pokémon name:", searchPokemonList);
+          
         }
       }}>
       Search

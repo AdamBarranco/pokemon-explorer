@@ -3,11 +3,12 @@ import { Separator } from "@/components/ui/separator"
 import CardComponent from "../components/card/cardComponent"
 import { fetchPokemonDataFromList } from "../components/coreComponent"
 import { BackBtn, NextBtn, SearchBtn } from "../components/button/buttonComponent"
-import { InputComponent } from "../components/input/inputComponent"
+import { InputComponent, InputErrorComponent } from "../components/input/inputComponent"
 import { inter } from "../utils/fontHelper"
 import SpinnerComponent from "../components/spinner/spinnerComponent"
 import { useState, useEffect } from "react";
 import { capitalize } from "../utils/capitalHelper";
+import { notFound } from "next/navigation";
 
 export default function LandingPage() {
   const [page, setPage] = useState(1);
@@ -15,6 +16,7 @@ export default function LandingPage() {
   const [pokemonName, setPokemonName] = useState("");
   const [searchPokemonList, setSearchPokemonList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [notFound, setNotFound] = useState(false);
   console.log("Current Pokémon list state:", pokemonListState);
 
   useEffect(() => {
@@ -58,10 +60,16 @@ export default function LandingPage() {
               Explore Pokémon
             </h2>
             <div className="flex  gap-3">
+            {notFound == false && (
               <InputComponent value={pokemonName} onChange={setPokemonName} />
-              <SearchBtn pokemonName={pokemonName} pokemonListState={pokemonListState} searchPokemonList={searchPokemonList} setSearchPokemonList={setSearchPokemonList} page={page} setPage={setPage} />
-            </div>
+            )}
+            {notFound && (
+              <InputErrorComponent value={pokemonName} onChange={setPokemonName} />
+            )}
+            <SearchBtn pokemonName={pokemonName} pokemonListState={pokemonListState} searchPokemonList={searchPokemonList} setSearchPokemonList={setSearchPokemonList} page={page} setPage={setPage} notFound={notFound} setNotFound={setNotFound} />
+          
           </div>
+        </div>
 
           <div className="grid grid-cols-4 gap-4 mt-8 flex justify-between px-0 opacity-100">
             {

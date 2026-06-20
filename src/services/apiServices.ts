@@ -3,9 +3,8 @@
 // Api function to fetch list of pokemon this returns only name and url
 async function fetchPokemonList(): Promise<any> {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/`);
-    if (!response.ok) {
-        throw new Error(`Failed to fetch data for list of Pokémon: ${response.statusText}`);
-    }
+
+    responseHandler(response);
     const data = await response.json();
     return data;
 }
@@ -13,9 +12,7 @@ async function fetchPokemonList(): Promise<any> {
 // Api function to fetch specific pokemon data this all returns full details 
 async function fetchPokemonData(pokemonName: string): Promise<any> {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
-    if (!response.ok) {
-        throw new Error(`Failed to fetch data for Pokémon ${pokemonName}: ${response.statusText}`);
-    }
+    responseHandler(response);
     const data = await response.json();
     return data;
 }
@@ -43,12 +40,7 @@ async function fetchPokemonDataFromList(): Promise<any> {
 
 
 async function fetchPokemonGender(pokemonId: number): Promise<any> {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
-
-    if (!response.ok) {
-        throw new Error(`Failed to fetch species data for Pokémon ID ${pokemonId}: ${response.statusText}`);
-    }
-    const data = await response.json();
+    const data = await callSpeciesApi(pokemonId);
     const genderRate = data.gender_rate;
     let gender: string;
     if (genderRate === -1) {
@@ -64,31 +56,21 @@ async function fetchPokemonGender(pokemonId: number): Promise<any> {
 }
 
 async function fetchCategory(pokemonId: number): Promise<any> {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
-
-    if (!response.ok) {
-        throw new Error(`Failed to fetch species data for Pokémon ID ${pokemonId}: ${response.statusText}`);
-    }
-    const data = await response.json();
+    const data = await callSpeciesApi(pokemonId);
     const category = data.genera.find((genus: any) => genus.language.name === "en")?.genus || "Unknown";
     return category;
 }
 
 async function fetchPokemonDescription(pokemonId: number): Promise<string> {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
-    if (!response.ok) {
-        throw new Error(`Failed to fetch description for Pokémon ID ${pokemonId}: ${response.statusText}`);
-    }
-    const data = await response.json();
+    const data = await callSpeciesApi(pokemonId);
+    
     const description = data.flavor_text_entries.find((entry: any) => entry.language.name === "en")?.flavor_text || "No description available";
     return description;
 }
 
 async function fetchWeaknesses(types: string[]): Promise<any> {
     const response = await fetch(`https://pokeapi.co/api/v2/type/${types[0]}`);
-    if (!response.ok) {
-        throw new Error(`Failed to fetch type data for Pokémon type ${types[0]}: ${response.statusText}`);
-    }
+    responseHandler(response);
     const data = await response.json();
     const weaknesses = data.damage_relations.double_damage_from.map((typeInfo: any) => typeInfo.name);
     return weaknesses;
@@ -123,11 +105,31 @@ async function fetchPokemonDetails(pokemonName: string, pokemonId: number): Prom
             speed: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "speed")?.base_stat,
 
         }
-
     }
     catch (error) {
         console.error(`Error fetching details for Pokémon ${pokemonName}:`, error);
         throw error;
+    }
+}
+
+async function callSpeciesApi(pokemonId: number): Promise<any> {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch species data for Pokémon ID ${pokemonId}: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+}
+
+function responseHandler(response: any): void {
+    if (!response.ok) {
+        throw new Error(`API request failed: ${response.statusText}`);
+    }else if (response.status === 404) {
+        throw new Error(`Pokémon not found: ${response.statusText}`);
+    }else if (response.status === 500) {
+        throw new Error(`Server error: ${response.statusText}`);
+    }else if (response.status === 403) {
+        throw new Error(`Forbidden: ${response.statusText}`);
     }
 }
 

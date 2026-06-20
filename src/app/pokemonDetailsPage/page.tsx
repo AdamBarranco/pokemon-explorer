@@ -29,7 +29,6 @@ export default function PokemonDetailsPage() {
     useEffect(() => {
         async function fetchData(pokemonName: string | null, pokemonId: number) {
             setLoading(true);
-
             try {
                 if (pokemonName === null) {
                     throw new Error("Invalid Pokémon name or ID");
@@ -54,7 +53,7 @@ export default function PokemonDetailsPage() {
             <main className="flex flex-col w-full max-w-6xl mx-auto py-16 px-6 bg-white dark:bg-black">
 
                 <div className={`${inter.className}  dark:bg-[#181A1B]`}>
-                    <h3 className="text-2xl font-bold mb-4 text-left">Pokemon Browser</h3>
+                    <h3 className="text-2xl font-bold mb-4 text-left">Pokémon  Browser</h3>
                 </div>
 
                 <div className="flex flex-col justify-center gap-2 text-center">
@@ -78,7 +77,7 @@ export default function PokemonDetailsPage() {
                                             </div>
 
                                             <div className="text-lg font-medium text-center">
-                                                <p className="text-lg font-medium"> {pokemonDetails?.name + " #" + pokemonDetails?.number}</p>
+                                                <p className={`${inter.className} text-lg font-medium`}> {pokemonDetails?.name + " #" + pokemonDetails?.number}</p>
 
                                             </div>
 
