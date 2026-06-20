@@ -1,7 +1,7 @@
 "user client";
 
-import {useState} from "react";
-import {fetchCategory, fetchPokemonData, fetchPokemonGender, fetchPokemonList, fetchWeaknesses, fetchPokemonDescription} from "../services/apiServices";
+import { useState } from "react";
+import { fetchCategory, fetchPokemonData, fetchPokemonGender, fetchPokemonList, fetchWeaknesses, fetchPokemonDescription } from "../services/apiServices";
 import { capitalize } from "../utils/capitalHelper";
 
 
@@ -10,8 +10,8 @@ async function loadList(): Promise<any> {
     // const [pokemonList, setPokemonList] = useState<any>([]);
     // const [loading, setLoading] = useState<boolean>(true);
 
-    
-    try{
+
+    try {
         const data = await fetchPokemonList();
         return data;
         // setPokemonList(data.results);
@@ -19,7 +19,7 @@ async function loadList(): Promise<any> {
     catch (error) {
         console.error("Error fetching Pokémon list:", error);
         throw error;
-    }finally {
+    } finally {
         // setLoading(false);
     }
 
@@ -56,7 +56,7 @@ async function displayPokemonDetails(pokemonName: string, pokemonId: number): Pr
             speed: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "speed")?.base_stat,
 
         }
-        
+
     }
     catch (error) {
         console.error(`Error fetching details for Pokémon ${pokemonName}:`, error);
@@ -69,7 +69,7 @@ async function fetchPokemonDataFromList(): Promise<any> {
     // const [loading, setLoading] = useState<boolean>(true);
     const pokemonList: any[] = [];
 
-    try{
+    try {
         const data = await fetchPokemonList();
         pokemonList.push(...data.results);
         for (const pokemon of data.results) {
@@ -86,7 +86,7 @@ async function fetchPokemonDataFromList(): Promise<any> {
     finally {
         // setLoading(false);
     }
-    return {pokemonList, loading: false};
+    return { pokemonList, loading: false };
 };
 
 export { loadList, displayPokemonDetails, fetchPokemonDataFromList };

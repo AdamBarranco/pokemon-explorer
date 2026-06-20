@@ -1,12 +1,12 @@
-import {Button} from "@/components/ui/button";
-import {ArrowLeftIcon, ArrowRightIcon} from "lucide-react";
-import {inter} from "../../utils/fontHelper"
+import { Button } from "@/components/ui/button";
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import { inter } from "../../utils/fontHelper"
 import { returnCardDetail } from "@/src/pages/landingPage";
-import {redirect} from "next/navigation";
+import { redirect } from "next/navigation";
 
 interface ButtonProps {
   page: number;
-  setPage:React.Dispatch<React.SetStateAction<number>>;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 interface SearchButtonProps {
   pokemonName?: string;
@@ -15,24 +15,24 @@ interface SearchButtonProps {
   setSearchPokemonList?: React.Dispatch<React.SetStateAction<any[]>>;
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
- 
+
 }
 
 export function BackBtn({ page, setPage }: ButtonProps) {
- 
-  if(page === 0) {
+
+  if (page === 0) {
     return (
-      
+
       <Button variant="outline" className={`${inter.className} bg-[#181A1B] text-white flex items-center gap-2 shadow-md rounded-md border px-3 py-1`} onClick={() => {
         setPage(1);
         console.log("Back button clicked. Current page:", page);
       }}>
         <ArrowLeftIcon className="w-4 h-4" />
-      Back
-    </Button>
+        Back
+      </Button>
     );
   }
-    return (
+  return (
 
     <Button disabled={page <= 1} variant="outline" className={`${inter.className} bg-[#181A1B] text-white flex items-center gap-2 shadow-md rounded-md border px-3 py-1`} onClick={() => {
       if (page > 1) {
@@ -59,33 +59,33 @@ export function NextBtn({ page, setPage }: ButtonProps) {
   );
 }
 
-export function SearchBtn({pokemonName, pokemonListState, searchPokemonList, setSearchPokemonList, page, setPage }: SearchButtonProps) {
+export function SearchBtn({ pokemonName, pokemonListState, searchPokemonList, setSearchPokemonList, page, setPage }: SearchButtonProps) {
   return (
-    <Button variant="outline" className={`${inter.className} bg-[#181A1B] text-white flex items-center shadow-md rounded-md gap-2 px-4 py-2`} 
-    
-    onClick={() => {
+    <Button variant="outline" className={`${inter.className} bg-[#181A1B] text-white flex items-center shadow-md rounded-md gap-2 px-4 py-2`}
 
-     if (pokemonName != null) { 
-      const lowerCaseName = pokemonName.toLowerCase();
-      const foundPokemon = pokemonListState?.find((pokemon) => pokemon.name.toLowerCase() === lowerCaseName);
+      onClick={() => {
 
-      if (foundPokemon && setSearchPokemonList) {
-        setSearchPokemonList([foundPokemon]);
-        setPage(0);
-      }
-      console.log("Search button clicked. Current Pokémon name:", searchPokemonList);
-    }
-    }}>
+        if (pokemonName != null) {
+          const lowerCaseName = pokemonName.toLowerCase();
+          const foundPokemon = pokemonListState?.find((pokemon) => pokemon.name.toLowerCase() === lowerCaseName);
+
+          if (foundPokemon && setSearchPokemonList) {
+            setSearchPokemonList([foundPokemon]);
+            setPage(0);
+          }
+          console.log("Search button clicked. Current Pokémon name:", searchPokemonList);
+        }
+      }}>
       Search
     </Button>
   );
 }
 
-export function ReturnBtn(){
-  return (<Button variant="outline" className={`${inter.className} bg-[#181A1B] text-white flex items-center shadow-md rounded-md gap-2 px-4 py-2`} 
+export function ReturnBtn() {
+  return (<Button variant="outline" className={`${inter.className} bg-[#181A1B] text-white flex items-center shadow-md rounded-md gap-2 px-4 py-2`}
     onClick={() => {
       redirect("/landingPage");
-  }}>
+    }}>
     <ArrowLeftIcon className="w-4 h-4" />
     Return Home
   </Button>);

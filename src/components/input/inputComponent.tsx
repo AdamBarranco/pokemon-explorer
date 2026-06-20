@@ -1,11 +1,11 @@
-import {Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import {
   Field,
   FieldDescription,
   FieldLabel,
 } from "@/components/ui/field"
-import {inter} from "../../utils/fontHelper"
-import {SearchBtn} from "../button/buttonComponent"
+import { inter } from "../../utils/fontHelper"
+import { SearchBtn } from "../button/buttonComponent"
 
 interface InputComponentProps {
   value: string;

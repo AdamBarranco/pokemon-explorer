@@ -24,7 +24,7 @@ async function fetchPokemonData(pokemonName: string): Promise<any> {
 async function fetchPokemonDataFromList(): Promise<any> {
     const pokemonList: any[] = [];
 
-    try{
+    try {
         const data = await fetchPokemonList();
         pokemonList.push(...data.results);
         for (const pokemon of data.results) {
@@ -38,7 +38,7 @@ async function fetchPokemonDataFromList(): Promise<any> {
         console.error("Error fetching Pokémon data:", error);
         throw error;
     }
-    return {pokemonList, loading: false};
+    return { pokemonList, loading: false };
 }
 
 
@@ -101,7 +101,7 @@ async function fetchPokemonDetails(pokemonName: string, pokemonId: number): Prom
     const category = await fetchCategory(pokemonId);
     const weaknesses = await fetchWeaknesses(pokemon.types.map((typeInfo: any) => typeInfo.type.name));
     const description = await fetchPokemonDescription(pokemonId);
-     try {
+    try {
         return {
             name: pokemon.name,
             imageUrl: pokemon.sprites.front_default,
@@ -123,7 +123,7 @@ async function fetchPokemonDetails(pokemonName: string, pokemonId: number): Prom
             speed: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "speed")?.base_stat,
 
         }
-        
+
     }
     catch (error) {
         console.error(`Error fetching details for Pokémon ${pokemonName}:`, error);
