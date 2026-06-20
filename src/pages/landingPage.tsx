@@ -7,6 +7,7 @@ import {InputComponent} from "../components/input/inputComponent"
 import {inter} from "../utils/fontHelper"
 import SpinnerComponent from "../components/spinner/spinnerComponent"
 import { useState, useEffect } from "react";
+import { capitalize } from "../utils/capitalHelper";
 
 export default function LandingPage() {
   const [page, setPage] = useState(1);
@@ -29,7 +30,7 @@ export default function LandingPage() {
       finally {
         setTimeout(() => {
           setLoading(false);
-        }, 500); 
+        }, 500); // delay to show the spinner - remove for production
       }
     }
     fetchData();
@@ -114,8 +115,8 @@ function handleCardLoad(list: any[], loading: boolean = false, page: number) {
 export function returnCardDetail(pokemon: any) {
   return (
   <CardComponent
-    key={pokemon.name}
-    name={pokemon.name}
+    key={capitalize(pokemon.name)}
+    name={capitalize(pokemon.name)}
     imageUrl={pokemon.imageUrl}
     number={pokemon.number}
     type={pokemon.type}

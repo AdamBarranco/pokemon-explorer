@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator"
 import {ReturnBtn} from "../../components/button/buttonComponent"
 import {AbilityCard, InfoCard, OverviewCard, SideCard, StatsCard} from "../../components/card/statsCardComponent"
+import SpinnerComponent from "@/src/components/spinner/spinnerComponent";
 
 export default function PokemonDetailsPage() {
 
@@ -26,10 +27,7 @@ export default function PokemonDetailsPage() {
 
   useEffect(() => {
     async function fetchData(pokemonName: string | null, pokemonId: number) {
-        setLoading(true);
-        const timer = setTimeout(() => {
-        setLoading(false);
-        }, 1000); // delay to show the spinner - remove for production
+        setLoading(true); 
 
         try{
             if(pokemonName === null) {
@@ -40,10 +38,10 @@ export default function PokemonDetailsPage() {
         } catch (error) {
             console.error(`Error displaying details for Pokémon ${pokemonName}:`, error);
         }finally {
-            console.log("Pokemon details fetched:", pokemonDetails);
-            clearTimeout(timer);
-            setLoading(false);
-        }
+        setTimeout(() => {
+          setLoading(false);
+        }, 500); // delay to show the spinner - remove for production
+      }
     }
     fetchData(pokemonName, pokemonId);
     
@@ -53,21 +51,28 @@ export default function PokemonDetailsPage() {
   return (
     <div className="flex flex-col w-full min-h-screen gap-12 opacity-100">
         <main className="flex flex-col w-full max-w-6xl mx-auto py-16 px-6 bg-white dark:bg-black">
-            <div className="flex flex-col justify-center gap-2 text-center">
 
-                {/* top bar and section */}
-
-                <div className="w-full">
-                    <div className={`${inter.className}  dark:bg-[#181A1B]`}>
+            <div className={`${inter.className}  dark:bg-[#181A1B]`}>
                     <h3 className="text-2xl font-bold mb-4 text-left">Pokemon Browser</h3>
+            </div>
+
+            <div className="flex flex-col justify-center gap-2 text-center">
+                {loading ? (
+                    <div className="flex justify-center items-center h-64">
+                        <SpinnerComponent />
                     </div>
+                ) : (
+                    <>
+                        {/* top bar and section */}
+
+                        <div className="w-full">
 
                     <div className=" dark:bg-[#181A1B]">
                         <div className="h-1/2 bg-[#F5F5F5]">
                         
                         <div className=" flex flex-col items-center justify-center gap-4 ">    
-                            <div className="w-32 h-32 rounded-full overflow-hidden bg-white flex items-center justify-center ">
-                                <img src={pokemonDetails?.imageUrl} alt={pokemonDetails?.name} className="object-cover"></img>
+                            <div className="w-[208px] h-[208px] rounded-full overflow-hidden bg-white flex items-center justify-center ">
+                                <img src={pokemonDetails?.imageUrl} alt={pokemonDetails?.name} className="object-cover w-[208px] h-[208px]"></img>
                             
                             </div>
 
@@ -102,9 +107,11 @@ export default function PokemonDetailsPage() {
                     </div>
                 
                 <div className="col-start-2 col-span-2 row-start-2 h-full">
-                    <StatsCard hp={pokemonDetails?.hp} attack={pokemonDetails?.attack} defense={pokemonDetails?.defense} sAttack={pokemonDetails?.sAttack} sDefense={pokemonDetails?.sDefense} speed={pokemonDetails?.speed} />
+                    <StatsCard hp={pokemonDetails?.hp} attack={pokemonDetails?.attack} defense={pokemonDetails?.defense} sAttack={pokemonDetails?.specialAttack} sDefense={pokemonDetails?.specialDefense} speed={pokemonDetails?.speed} />
                 </div>
                 </div>
+                    </>
+                ) }
             </div>
             <div className="flex flex-col gap-4 mt-8">
                 

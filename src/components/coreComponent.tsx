@@ -2,6 +2,7 @@
 
 import {useState} from "react";
 import {fetchCategory, fetchPokemonData, fetchPokemonGender, fetchPokemonList, fetchWeaknesses, fetchPokemonDescription} from "../services/apiServices";
+import { capitalize } from "../utils/capitalHelper";
 
 
 // Function to load the list of Pokemon and add data to state and loading management
@@ -34,14 +35,14 @@ async function displayPokemonDetails(pokemonName: string, pokemonId: number): Pr
     const description = await fetchPokemonDescription(pokemonId);
     try {
         return {
-            name: pokemon.name,
+            name: capitalize(pokemon.name),
             imageUrl: pokemon.sprites.front_default,
             number: pokemon.id,
-            type: pokemon.types.map((typeInfo: any) => typeInfo.type.name),
+            type: pokemon.types.map((typeInfo: any) => capitalize(typeInfo.type.name)),
 
             weight: pokemon.weight,
             height: pokemon.height,
-            abilities: pokemon.abilities.map((abilityInfo: any) => abilityInfo.ability.name),
+            abilities: pokemon.abilities.map((abilityInfo: any) => capitalize(abilityInfo.ability.name)),
             gender: gender,
             category: category,
             weaknesses: weaknesses,
@@ -75,7 +76,7 @@ async function fetchPokemonDataFromList(): Promise<any> {
             const pokemonData = await fetchPokemonData(pokemon.name);
             pokemon.imageUrl = pokemonData.sprites.front_default;
             pokemon.number = pokemonData.id;
-            pokemon.type = pokemonData.types.map((typeInfo: any) => typeInfo.type.name);
+            pokemon.type = pokemonData.types.map((typeInfo: any) => capitalize(typeInfo.type.name));
         }
     }
     catch (error) {
