@@ -81,7 +81,7 @@ export function SearchBtn({pokemonName, pokemonListState, searchPokemonList, set
   );
 }
 
-export function returnBtn(){
+export function ReturnBtn(){
   return (<Button variant="outline" className={`${inter.className} bg-[#181A1B] text-white flex items-center shadow-md rounded-md gap-2 px-4 py-2`} 
     onClick={() => {
       redirect("/landingPage");

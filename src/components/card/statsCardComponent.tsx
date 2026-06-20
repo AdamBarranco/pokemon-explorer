@@ -1,6 +1,6 @@
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
 import {inter} from "../../utils/fontHelper"
-
+import { Progress } from "@/components/ui/progress"
 
 type SideCardProps = {
 
@@ -30,30 +30,47 @@ type AbilityCardProps = {
     abilities: string[];
 }
 
-export function InfoCard({ title, content }: { title: string; content: string }) {
-
+type InfoCardProps = {
+    content: string;
 }
 
-export function sideCard({height, category, weight, gender}: SideCardProps){
+export function InfoCard({ content }: InfoCardProps) {
+
+    return (
+        <Card className="p-9 px-12 gap-8 rounded-xl h-[133px] items-start justify-center">
+            <CardContent>
+                <div className="flex items-center gap-3 ">
+                    <div className="w-[101px] h-[97px] rounded-full overflow-hidden bg-white flex items-center justify-center border">
+                        <img src="/pokeball.png" alt="pokeball" className="w-[97px] h-[93px]" />
+                    </div>
+                    <p className={`${inter.className} flex-1`}>{content}</p>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
+
+export function SideCard({height, category, weight, gender}: SideCardProps){
 
     return(
-        <Card>
+        <Card className="p-9 px-12 gap-8 rounded-xl h-full">
             <CardContent>
-                <div className="p-[36px] px-[48px] flex flex-col gap-8 rounded-xl border ">
-                    <div className="">
-                        <h3 className={`${inter.className} font-semibold`}>Height</h3>
+
+                <div className="flex flex-col gap-4 ">
+                    <div className="flex flex-col text-left text-lg ">
+                        <h3 className={`${inter.className} font-semibold text-2xl leading-8 tracking-[-0.025em] align-middle`}>Height</h3>
                     <p className={`${inter.className}`}>{(height/10).toFixed(1)+"m"}</p>
                     </div>
-                    <div className="">
-                        <h3 className={`${inter.className} font-semibold`}>Category</h3>
+                    <div className="flex flex-col text-left text-lg ">
+                        <h3 className={`${inter.className} font-semibold text-2xl leading-8 tracking-[-0.025em] align-middle`}>Category</h3>
                     <p className={`${inter.className}`}>{category}</p>
                     </div>
-                    <div className="">
-                        <h3 className={`${inter.className} font-semibold`}>Weight</h3>
-                    <p className={`${inter.className}`}>{(weight/10).toFixed(1)+"kg"}</p>
+                    <div className="flex flex-col text-left text-lg ">
+                        <h3 className={`${inter.className} font-semibold text-2xl leading-8 tracking-[-0.025em] align-middle`}>Weight</h3>
+                    <p className={`${inter.className} `}>{(weight/10).toFixed(1)+"kg"}</p>
                     </div>
-                    <div className="">
-                        <h3 className={`${inter.className} font-semibold`}>Gender</h3>
+                    <div className="flex flex-col text-left text-lg ">
+                        <h3 className={`${inter.className} font-semibold text-2xl leading-8 tracking-[-0.025em] align-middle`}>Gender</h3>
                     <p className={`${inter.className}`}>{gender}</p>
                     </div>
                 </div>
@@ -62,23 +79,27 @@ export function sideCard({height, category, weight, gender}: SideCardProps){
     )
 }
 
-export function overviewCard({type, weaknesses}: OverviewCardProps){
+export function OverviewCard({type =[], weaknesses = []}: OverviewCardProps){
 
     return (
-        <Card>
+        <Card className="p-9 px-12 gap-8 rounded-xl h-full">
             <CardContent>
-                <div className="">
-                    <div className="">
-                        <h3>Type</h3>
-                        {type.map((t => (
-                            <p key={t} className={`${inter.className} bg-[#181A1B] text-white rounded-md px-[10px] py-[2px] gap-[10px] opacity-100`}>{t}</p>
-                        )))}
+                <div className=" ">
+                    <div className="flex flex-col gap-3">
+                        <h3 className={`${inter.className} text-left text-[24px] font-semibold leading-8 tracking-[-0.025em]`}>Type</h3>
+                        <div className="flex flex-wrap mb-2  py-1 gap-3">
+                        {type.map((t) => (
+                            <p key={t} className={`${inter.className} text-[12px] bg-[#181A1B] text-white rounded-md px-[10px] py-[2px] gap-[10px] opacity-100`}>{t}</p>
+                        ))}
+                        </div>
                     </div>
-                    <div className="">
-                        <h3>Weaknesses</h3>
-                        {weaknesses.map((w => (
-                            <p key={w} className={`${inter.className} bg-[#181A1B] text-white rounded-md px-[10px] py-[2px] gap-[10px] opacity-100`}>{w}</p>
-                        )))}
+                    <div className="flex flex-col gap-3">
+                        <h3 className={`${inter.className} text-left text-[24px] font-semibold leading-8 tracking-[-0.025em]`}>Weaknesses</h3>
+                    <div className="flex flex-wrap mb-2  py-1 gap-3">
+                        {weaknesses.map((w) => (
+                            <p key={w} className={`${inter.className} text-[12px] bg-[#181A1B] text-white rounded-md px-[10px] py-[2px] gap-[10px] opacity-100`}>{w}</p>
+                        ))}
+                    </div>
                     </div>
                 </div>
             </CardContent>
@@ -87,7 +108,62 @@ export function overviewCard({type, weaknesses}: OverviewCardProps){
 
 }
 
-export function statsCard({hp, attack, defense, sAttack, sDefense, speed}: StatsCardProps){
+export function StatsCard({hp, attack, defense, sAttack, sDefense, speed}: StatsCardProps){
 
+    return (
+        <Card className="p-9 px-12 gap-8 rounded-xl h-full">
+            <CardContent>
+                <div className="">
+                    <div className="flex flex-col gap-3">
+                        <h3 className={`${inter.className} text-left text-[24px] font-semibold leading-8 tracking-[-0.025em]`}>Stats</h3>
+                        <div className="flex flex-col gap-2">
+                            <Stat stat="HP" value={hp} />
+                            <Stat stat="Attack" value={attack} />
+                            <Stat stat="Defense" value={defense} />
+                            <Stat stat="Special Attack" value={sAttack} />
+                            <Stat stat="Special Defense" value={sDefense} />
+                            <Stat stat="Speed" value={speed} />
+                        </div>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+    )
 
 }
+
+export function AbilityCard({abilities = []}: AbilityCardProps){
+
+    return (
+        <Card className="p-9 px-12 gap-8 rounded-xl h-full">
+            <CardContent>
+                <div className="">
+                    <div className="flex flex-col gap-3">
+                        <h3 className={`${inter.className} text-left text-[24px] font-semibold leading-8 tracking-[-0.025em]`}>Abilities</h3>
+                        <div className="flex flex-wrap mb-2  py-1 gap-3">
+                            {abilities.map((a) => (
+                                <p key={a} className={`${inter.className} text-[12px] bg-[#181A1B] text-white rounded-md px-[10px] py-[2px] gap-[10px] opacity-100`}>{a}</p>
+                            ))}
+                        </div>
+                    </div>  
+                </div>
+            </CardContent>
+        </Card>
+    )
+}
+
+export function ProgressBar( { progress }: { progress: number }) {
+  return <Progress value={progress} className="w-full h-2" />
+}
+
+function Stat( { stat, value }: { stat: string; value: number }) {
+    return (
+        <div className="flex items-center gap-3">
+            <p className={`${inter.className} text-left w-28 text-sm`}>{stat}:</p>
+            <div className="flex-1">
+                <ProgressBar progress={value} />
+            </div>
+        </div>
+    )
+}
+

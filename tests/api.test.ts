@@ -35,6 +35,7 @@ describe('API Services', () => {
         expect(data.name).toBe(pokemonName);
         expect(data.gender).toBeDefined();
         expect(data.category).toBeDefined();    
+        expect(data.weaknesses).toBeDefined();
         console.log(`Fetched details for ${pokemonName}:`, data);
     });
 

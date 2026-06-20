@@ -1,7 +1,7 @@
 "user client";
 
 import {useState} from "react";
-import {fetchCategory, fetchPokemonData, fetchPokemonGender, fetchPokemonList} from "../services/apiServices";
+import {fetchCategory, fetchPokemonData, fetchPokemonGender, fetchPokemonList, fetchWeaknesses, fetchPokemonDescription} from "../services/apiServices";
 
 
 // Function to load the list of Pokemon and add data to state and loading management
@@ -30,19 +30,23 @@ async function displayPokemonDetails(pokemonName: string, pokemonId: number): Pr
     const pokemon = await fetchPokemonData(pokemonName);
     const gender = await fetchPokemonGender(pokemonId);
     const category = await fetchCategory(pokemonId);
+    const weaknesses = await fetchWeaknesses(pokemon.types.map((typeInfo: any) => typeInfo.type.name));
+    const description = await fetchPokemonDescription(pokemonId);
     try {
         return {
             name: pokemon.name,
             imageUrl: pokemon.sprites.front_default,
             number: pokemon.id,
-            type: pokemon.types.map((typeInfo: any) => typeInfo.type.name).join(", "),
+            type: pokemon.types.map((typeInfo: any) => typeInfo.type.name),
 
             weight: pokemon.weight,
             height: pokemon.height,
-            abilities: pokemon.abilities.map((abilityInfo: any) => abilityInfo.ability.name).join(", "),
+            abilities: pokemon.abilities.map((abilityInfo: any) => abilityInfo.ability.name),
             gender: gender,
             category: category,
+            weaknesses: weaknesses,
 
+            description: description,
             hp: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "hp")?.base_stat,
             attack: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "attack")?.base_stat,
             defense: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "defense")?.base_stat,

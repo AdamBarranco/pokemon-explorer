@@ -5,8 +5,8 @@ import { displayPokemonDetails } from "../../components/coreComponent";
 import {useSearchParams} from "next/navigation";
 import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator"
-import {returnBtn} from "../../components/button/buttonComponent"
-import {sideCard} from "../../components/card/statsCardComponent"
+import {ReturnBtn} from "../../components/button/buttonComponent"
+import {AbilityCard, InfoCard, OverviewCard, SideCard, StatsCard} from "../../components/card/statsCardComponent"
 
 export default function PokemonDetailsPage() {
 
@@ -54,40 +54,62 @@ export default function PokemonDetailsPage() {
     <div className="flex flex-col w-full min-h-screen gap-12 opacity-100">
         <main className="flex flex-col w-full max-w-6xl mx-auto py-16 px-6 bg-white dark:bg-black">
             <div className="flex flex-col justify-center gap-2 text-center">
-                <div className={`${inter.className}  dark:bg-[#181A1B]`}>
-                <h3 className="text-2xl font-bold mb-4">Pokemon Browser</h3>
-                </div>
 
-                <div className=" dark:bg-[#181A1B]">
-                    <div className="h-1/2 bg-[#F5F5F5]"></div>
-                    
-                    <div className=" flex col 2 gap-4 justify-center items-center">    
-                        <div className="flex flex-col items-center">
-                            <img src={pokemonDetails?.imageUrl} alt={pokemonDetails?.name} className="object-cover"></img>
-                           
-                        </div>
+                {/* top bar and section */}
 
-                        <div className="flex flex-col items-center">
-                             <p className="text-lg font-medium"> {pokemonDetails?.name + " #" + pokemonDetails?.number}</p>
+                <div className="w-full">
+                    <div className={`${inter.className}  dark:bg-[#181A1B]`}>
+                    <h3 className="text-2xl font-bold mb-4 text-left">Pokemon Browser</h3>
+                    </div>
+
+                    <div className=" dark:bg-[#181A1B]">
+                        <div className="h-1/2 bg-[#F5F5F5]">
+                        
+                        <div className=" flex flex-col items-center justify-center gap-4 ">    
+                            <div className="w-32 h-32 rounded-full overflow-hidden bg-white flex items-center justify-center ">
+                                <img src={pokemonDetails?.imageUrl} alt={pokemonDetails?.name} className="object-cover"></img>
                             
-                        </div>
+                            </div>
 
+                            <div className="text-lg font-medium text-center">
+                                <p className="text-lg font-medium"> {pokemonDetails?.name + " #" + pokemonDetails?.number}</p>
+                                
+                            </div>
+
+                        </div>
+                        </div>
                     </div>
                 </div>
-                <div className="grid items-center gap-2 mt-4">
+
+                {/* info card */}
+                <div className="flex flex-col gap-4 mt-8">
+                    <InfoCard content={pokemonDetails?.description} />
+                </div>
+                <div className="grid grid-cols-3 grid-rows-2 gap-4 mt-4 items-stretch">
             
                 {/* left side */}
-                <div className="grid grid-cols-1 gap-2 mt-4">
-                    {sideCard({height: pokemonDetails?.height, category: pokemonDetails?.category, weight: pokemonDetails?.weight, gender: pokemonDetails?.gender})} 
+                <div className="col-start-1 row-start-1 row-span-2 ">
+                    <SideCard height={pokemonDetails?.height} category={pokemonDetails?.category} weight={pokemonDetails?.weight} gender={pokemonDetails?.gender} />
                 </div>
 
                 {/* right side */}
-                <div className="grid grid-cols-2 gap-2 mt-4">
-
+                
+                    <div className="col-start-2 row-start-1">
+                        <OverviewCard type={pokemonDetails?.type} weaknesses={pokemonDetails?.weaknesses} />
+                    </div>
+                    <div className="col-start-3 row-start-1">
+                        <AbilityCard abilities={pokemonDetails?.abilities} />
+                    </div>
+                
+                <div className="col-start-2 col-span-2 row-start-2 h-full">
+                    <StatsCard hp={pokemonDetails?.hp} attack={pokemonDetails?.attack} defense={pokemonDetails?.defense} sAttack={pokemonDetails?.sAttack} sDefense={pokemonDetails?.sDefense} speed={pokemonDetails?.speed} />
                 </div>
                 </div>
-                <div className="flex flex-col items-center gap-2 mt-4">
-                    {returnBtn()}
+            </div>
+            <div className="flex flex-col gap-4 mt-8">
+                
+                <div className="flex flex-col items-start gap-2 mt-4">
+                    <ReturnBtn />
                 </div>
                 <Separator className="my-8" />
             </div>

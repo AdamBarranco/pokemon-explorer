@@ -74,24 +74,47 @@ async function fetchCategory(pokemonId: number): Promise<any> {
     return category;
 }
 
+async function fetchPokemonDescription(pokemonId: number): Promise<string> {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch description for Pokémon ID ${pokemonId}: ${response.statusText}`);
+    }
+    const data = await response.json();
+    const description = data.flavor_text_entries.find((entry: any) => entry.language.name === "en")?.flavor_text || "No description available";
+    return description;
+}
+
+async function fetchWeaknesses(types: string[]): Promise<any> {
+    const response = await fetch(`https://pokeapi.co/api/v2/type/${types[0]}`);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch type data for Pokémon type ${types[0]}: ${response.statusText}`);
+    }
+    const data = await response.json();
+    const weaknesses = data.damage_relations.double_damage_from.map((typeInfo: any) => typeInfo.name);
+    return weaknesses;
+}
+
 
 async function fetchPokemonDetails(pokemonName: string, pokemonId: number): Promise<any> {
     const pokemon = await fetchPokemonData(pokemonName);
     const gender = await fetchPokemonGender(pokemonId);
     const category = await fetchCategory(pokemonId);
+    const weaknesses = await fetchWeaknesses(pokemon.types.map((typeInfo: any) => typeInfo.type.name));
+    const description = await fetchPokemonDescription(pokemonId);
      try {
         return {
             name: pokemon.name,
             imageUrl: pokemon.sprites.front_default,
             number: pokemon.id,
-            type: pokemon.types.map((typeInfo: any) => typeInfo.type.name).join(", "),
-
+            type: pokemon.types.map((typeInfo: any) => typeInfo.type.name),
+            weaknesses: weaknesses,
             weight: pokemon.weight,
             height: pokemon.height,
-            abilities: pokemon.abilities.map((abilityInfo: any) => abilityInfo.ability.name).join(", "),
+            abilities: pokemon.abilities.map((abilityInfo: any) => abilityInfo.ability.name),
             gender: gender,
             category: category,
 
+            description: description,
             hp: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "hp")?.base_stat,
             attack: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "attack")?.base_stat,
             defense: pokemon.stats.find((statInfo: any) => statInfo.stat.name === "defense")?.base_stat,
@@ -108,4 +131,4 @@ async function fetchPokemonDetails(pokemonName: string, pokemonId: number): Prom
     }
 }
 
-export { fetchPokemonList, fetchPokemonData, fetchPokemonDataFromList, fetchPokemonDetails, fetchPokemonGender, fetchCategory };
+export { fetchPokemonList, fetchPokemonData, fetchPokemonDataFromList, fetchPokemonDetails, fetchPokemonGender, fetchCategory, fetchWeaknesses, fetchPokemonDescription };
