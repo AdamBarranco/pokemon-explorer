@@ -13,39 +13,43 @@
 5. Open http://localhost:3000 
 
 ## Design and Component Decisions
-The structure of the components 
+The components in the components folder implement the logic for the page components. The useState hooks are lifted to the pages, allowing the components to set parameters and interact with the UI indirectly.
 
-Shadcn was utilsed within this application using components such as card, button, input, progress, seperator and spinner. The card component was utilsed to be able to format the custom cards to correlate to the figma design.
+Shadcn was utilised within this application using components such as Card, Button, Input, Progress, Separator, and Spinner. The Card component was utilised to format the custom cards so that they correlated with the Figma design.
 
-I had made minor changes to the figma design such as implementing the back button on the searched pokemon to return the original pokemon list, as well as disabling the next button if the page <2 this was to prevent the incrementation when pressing the button. Also, an addition to the input validation to show red border if the pokemon isnt found.
+I made minor changes to the Figma design, such as implementing a back button on the searched pokemon page to return to the original pokemon list, as well as disabling the Previous button when the page number is less than 2. This was done to prevent invalid page navigation. I also added input validation to display a red border when a pokemon is not found.
 
 ## State Management Approach
-To handle the state of the of the application such as the pokemon list I have implemented the hook useState, this has enabled me to set the pokemonList using setPokemonList and retrieve that data with pokemonList the usage of the useState allows the UI to render when a change is made to the data.
+To handle the state of the application, such as the pokemon list, I implemented the useState hook. This enabled me to set the pokemonList using setPokemonList and retrieve the data through pokemonList. Using useState allows the UI to automatically re-render whenever the data changes.
 
-Pagination was handled via the hook useState with the page acting as the state and setting the page number to change the state of the page for example the page is set to 1 acting as the home page, when the next button is clicked the page is incremented to change the page number therefore updating the pokemonList to the next 12 pokemons. The search page was asigned to page 0 as the page design and layout was the same as the landing page making it more efficent to update the list to the searched pokemon and display 
+Pagination was handled using the useState hook, with page acting as the state value. The page is initially set to 1, representing the home page. When the Next button is clicked, the page number is incremented, updating the pokemonList to display the next 12 pokemon.
 
-The handling of the pokemonDetailsPage was implemented the via hook useRouter this allows me to pass the pokemons name and id which is retrived using searchParams, this data is then used to retieve the specific pokemons data.
+The search page was assigned to page 0, as its design and layout are the same as the landing page. This made it more efficient to update the list with the searched pokemon and display the results.
+
+The handling of the pokemonDetailsPage was implemented using the useRouter hook. This allows me to pass the pokemon's name and ID, which are retrieved using searchParams. This data is then used to retrieve the specific pokemon's details.
 
 ## API Interaction Strategy
-I have used helper functions within the services folder to interact with the pokemon api and retrieve the data provided along with a helper function to handle the responses status codes which were tested with vitest to validate for the components, this data is then formatted for easy use when used in the components.
+I used helper functions within the services folder to interact with the pokeapi and retrieve data. I also created a helper function to handle response status codes, which were tested with Vitest to validate the functionality of the components. The retrieved data is then formatted for easier use throughout the application.
 
-To handle the calling of the async functions I have implemented the hook useEffect, this hook can create an request to an api once the component is rendered.
+To handle asynchronous API calls, I implemented the useEffect hook. This hook allows requests to be made when a component is rendered.
 
 ## Challenges Encountered & Solutions
 
-Challengs mainly occured when developing the UI, for example formating the cards within the pokemon detail page was hard to implement, however after research I had found a solution such as implememting a grid to place the cards in the correct format.
+Challenges mainly occurred when developing the UI. For example, formatting the cards within the pokemon details page was difficult to implement. However, after some research, I found a solution by implementing a grid layout to position the cards correctly.
 
-Another technical challenge was finding the correct data within the api endpoints, for example having to use different endpoints to find the needed data for the pokemon details page. To solve this I had looked through the poke api to find the correct endpoints such as pokemon-species and type. Then I opened the endpoint to see the data that is returned and using the f3 tool to find specific data such as the weaknesses, gender, description ect which I could then format for use.
+Another technical challenge was finding the correct data within the API endpoints. For example, I needed to use multiple endpoints to retrieve the required information for the pokemon details page. To solve this, I explored the poke api documentation and identified the appropriate endpoints, such as pokemon-species and type. I then examined the returned data and used the search functionality within my editor to locate specific fields such as weaknesses, gender, descriptions, and other information, which I then formatted for use within the application.
 
 ## Bonus Feature Implementation 
-To implement the search feature I had taken the pokemon list that was stored and checked the name of the pokemon against the list to see if it was within the list and then updated the seachPokemonList to the searched pokemon, the decision for another list was if a filter or order feature is later implemented.
+To implement the search feature, I used the stored pokemon list and checked whether the entered pokemon name existed within the list. If found, I updated the searchPokemonList with the matching pokemon. The decision to use a separate list was made to support future features such as filtering or sorting.
 
-To display the images I had called the sprite from the api and formatted so I could retrive it easily.
+To display pokemon images, I retrieved the sprite URLs from the API and formatted the data so it could be accessed easily throughout the application.
 
-The loading state indicator was implement using the hook useState to setLoading and then call that state as well as the shadcn spinner component was implemented for the UI. Also a delay was used to demonstrate the spinner, if made production this would be removed.
+The loading state indicator was implemented using the useState hook through setLoading. This state was used alongside the Shadcn Spinner component to provide visual feedback while data was loading. A delay was also added to demonstrate the spinner during development; however, this would be removed in a production environment.
 
 ## Self-Reflection & Potential Improvements (Optional but Valued)
 
-The part of the solution I am most proud of is the structuring of the pokemons data, the data was formatted making it easy to implement into the ui components. Another part I am proud of is the code quality, I believe that is readable and clean due to refactoring the react pages to be less noisey using the components and functions to call within the page also within the components and ts files. Comments were utilse where neccessary.
+The part of the solution I am most proud of is the structuring and formatting of the pokemon data. Organising the data in this way made it much easier to implement within the UI components.
 
-Improvements I would make would be minor tweeks to the ui such as more space between the pokemons on the landing page
+Another aspect I am proud of is the overall code quality. I believe the code is readable and maintainable due to refactoring the React pages to reduce complexity by separating functionality into reusable components and helper functions. Comments were also utilised where necessary to improve clarity.
+
+Potential improvements would include minor UI refinements, such as increasing the spacing between pokemon cards on the landing page. I would also implement filtering options to allow users to search by types, weaknesses, and other attributes. This could be particularly useful for users who play the pokemon card game and want to quickly identify pokemon strengths and weaknesses.
