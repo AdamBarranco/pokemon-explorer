@@ -12,7 +12,7 @@ import {
 type CardComponentProps = {
     name: string;
     imageUrl: string;
-    number: number;
+    number: string;
     type: string[];
 };
 

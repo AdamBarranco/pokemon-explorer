@@ -2,6 +2,7 @@
 
 import { fetchCategory, fetchPokemonData, fetchPokemonGender, fetchPokemonList, fetchWeaknesses, fetchPokemonDescription, fetchAbility } from "../services/apiServices";
 import { capitalize } from "../utils/capitalHelper";
+import { formatNumber } from "../utils/numberFormatHelper";
 
 
 // Function to load the list of Pokemon and add data to state and loading management
@@ -36,7 +37,7 @@ async function displayPokemonDetails(pokemonName: string, pokemonId: number): Pr
             // Basic Info
             name: capitalize(pokemon.name),
             imageUrl: pokemon.sprites.front_default,
-            number: pokemon.id,
+            number: formatNumber(pokemon.id),
             type: pokemon.types.map((typeInfo: any) => capitalize(typeInfo.type.name)),
 
             // SideCard Info
@@ -78,7 +79,7 @@ async function fetchPokemonDataFromList(): Promise<any> {
         for (const pokemon of data.results) {
             const pokemonData = await fetchPokemonData(pokemon.name);
             pokemon.imageUrl = pokemonData.sprites.front_default;
-            pokemon.number = pokemonData.id;
+            pokemon.number = formatNumber(pokemonData.id);
             pokemon.type = pokemonData.types.map((typeInfo: any) => capitalize(typeInfo.type.name));
         }
     }

@@ -9,6 +9,7 @@ import SpinnerComponent from "../components/spinner/spinnerComponent"
 import { useState, useEffect } from "react";
 import { capitalize } from "../utils/capitalHelper";
 import { notFound } from "next/navigation";
+import { formatNumber } from "../utils/numberFormatHelper";
 
 export default function LandingPage() {
   const [page, setPage] = useState(1);
@@ -126,7 +127,7 @@ export function returnCardDetail(pokemon: any) {
       key={capitalize(pokemon.name)}
       name={capitalize(pokemon.name)}
       imageUrl={pokemon.imageUrl}
-      number={pokemon.number}
+      number={formatNumber(pokemon.number)}
       type={pokemon.type}
     />
   )

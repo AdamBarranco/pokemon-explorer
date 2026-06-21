@@ -76,8 +76,9 @@ export default function PokemonDetailsPage() {
 
                                             </div>
 
-                                            <div className="text-lg font-medium text-center">
-                                                <p className={`${inter.className} text-lg font-medium`}> {pokemonDetails?.name + " #" + pokemonDetails?.number}</p>
+                                            <div className="text-lg font-medium text-center flex flex-row gap-2">
+                                                <p className={`${inter.className} flex text-lg font-medium text-[30px]`}> {pokemonDetails?.name }</p>
+                                                <p className={`${inter.className} flex text-lg font-medium text-[30px] text-[#71717A]`}>{"#" + pokemonDetails?.number}</p>
 
                                             </div>
 
