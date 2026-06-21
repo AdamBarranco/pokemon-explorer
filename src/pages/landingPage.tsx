@@ -1,12 +1,15 @@
 import "../app/globals.css";
 import { Separator } from "@/components/ui/separator"
 import CardComponent from "../components/card/cardComponent"
-import {fetchPokemonDataFromList} from "../components/coreComponent"
-import {BackBtn, NextBtn, SearchBtn} from "../components/button/buttonComponent"
-import {InputComponent} from "../components/input/inputComponent"
-import {inter} from "../utils/fontHelper"
+import { fetchPokemonDataFromList } from "../components/coreComponent"
+import { BackBtn, NextBtn, SearchBtn } from "../components/button/buttonComponent"
+import { InputComponent, InputErrorComponent } from "../components/input/inputComponent"
+import { inter } from "../utils/fontHelper"
 import SpinnerComponent from "../components/spinner/spinnerComponent"
 import { useState, useEffect } from "react";
+import { capitalize } from "../utils/capitalHelper";
+import { notFound } from "next/navigation";
+import { formatNumber } from "../utils/numberFormatHelper";
 
 export default function LandingPage() {
   const [page, setPage] = useState(1);
@@ -14,6 +17,7 @@ export default function LandingPage() {
   const [pokemonName, setPokemonName] = useState("");
   const [searchPokemonList, setSearchPokemonList] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [notFound, setNotFound] = useState(false);
   console.log("Current Pokémon list state:", pokemonListState);
 
   useEffect(() => {
@@ -29,59 +33,65 @@ export default function LandingPage() {
       finally {
         setTimeout(() => {
           setLoading(false);
-        }, 500); 
+        }, 500); // delay to show the spinner - remove for production
       }
     }
     fetchData();
   }, []);
-      
+
 
   return (
     <div className="flex flex-col w-full min-h-screen gap-12 opacity-100">
-        <main className="flex flex-col w-full max-w-6xl mx-auto py-16 px-6 bg-white dark:bg-black">
+      <main className="flex flex-col w-full max-w-6xl mx-auto py-16 px-6 bg-white dark:bg-black">
 
-            <div className="flex flex-col justify-center gap-2 text-center">
-            <h1 className={`${inter.className} text-6xl leading-[78px] font-semibold text-[#181A1B] dark:text-zinc-50 `}>
-                Pokémon Browser
-            </h1>
-            <h2 className={`${inter.className} text-[#181A1B] text-3xl text-zinc-600 dark:text-zinc-400`}>
-                Search and find Pokémon 
-            </h2>
-            </div>
+        <div className="flex flex-col justify-center gap-2 text-center">
+          <h1 className={`${inter.className} text-6xl leading-[78px] font-semibold text-[#181A1B] dark:text-zinc-50 `}>
+            Pokémon Browser
+          </h1>
+          <h2 className={`${inter.className} text-[#181A1B] text-3xl text-zinc-600 dark:text-zinc-400`}>
+            Search and find Pokémon
+          </h2>
+        </div>
 
-            <Separator className="my-8" />
-            <div className="flex flex-col pl-[140px] pr-[140px]">
+        <Separator className="my-8" />
+        <div className="flex flex-col pl-[140px] pr-[140px]">
 
-            <div className="flex w-full justify-between items-center">
+          <div className="flex w-full justify-between items-center">
             <h2 className={`${inter.className} text-[#181A1B] text-[30px] font-semibold tracking-[-0.025em] `}>
-                Explore Pokémon
+              Explore Pokémon
             </h2>
             <div className="flex  gap-3">
-                <InputComponent value={pokemonName} onChange={setPokemonName} />
-                <SearchBtn pokemonName={pokemonName} pokemonListState={pokemonListState} searchPokemonList={searchPokemonList} setSearchPokemonList={setSearchPokemonList} page={page} setPage={setPage} />
-            </div>
-            </div>
+            {notFound == false && (
+              <InputComponent value={pokemonName} onChange={setPokemonName} />
+            )}
+            {notFound && (
+              <InputErrorComponent value={pokemonName} onChange={setPokemonName} />
+            )}
+            <SearchBtn pokemonName={pokemonName} pokemonListState={pokemonListState} searchPokemonList={searchPokemonList} setSearchPokemonList={setSearchPokemonList} page={page} setPage={setPage} notFound={notFound} setNotFound={setNotFound} />
+          
+          </div>
+        </div>
 
-            <div className="grid grid-cols-4 gap-4 mt-8 flex justify-between px-0 opacity-100">
-              {
-                loading ===true ? <div className="col-span-4 flex justify-center"><SpinnerComponent /></div> :
+          <div className="grid grid-cols-4 gap-4 mt-8 flex justify-between px-0 opacity-100">
+            {
+              loading === true ? <div className="col-span-4 flex justify-center"><SpinnerComponent /></div> :
                 page === 0 ? handleCardLoad(searchPokemonList, loading, page) : handleCardLoad(pokemonListState, loading, page)
-              }
-            </div>
-            </div>
-            <div className="flex  gap-3 justify-center mt-8">
-                <BackBtn page={page} setPage={setPage} />
-                <NextBtn page={page} setPage={setPage} />
-            </div>
+            }
+          </div>
+        </div>
+        <div className="flex  gap-3 justify-center mt-8">
+          <BackBtn page={page} setPage={setPage} />
+          <NextBtn page={page} setPage={setPage} />
+        </div>
 
-            <Separator className="my-8" />
+        <Separator className="my-8" />
 
-            <footer className="flex flex-col items-center justify-center gap-2 py-6 text-center">
-            <p className={`${inter.className} text-[#181A1B] font-semibold text-zinc-600 dark:text-zinc-400`}>
-                Thank you for using Pokémon Browser!
-            </p>
-            </footer>
-        </main>
+        <footer className="flex flex-col items-center justify-center gap-2 py-6 text-center">
+          <p className={`${inter.className} text-[#181A1B] font-semibold text-zinc-600 dark:text-zinc-400`}>
+            Thank you for using Pokémon Browser!
+          </p>
+        </footer>
+      </main>
     </div>
   );
 
@@ -89,19 +99,19 @@ export default function LandingPage() {
 
 function handleCardLoad(list: any[], loading: boolean = false, page: number) {
   try {
-    if( page === 0) {
+    if (page === 0) {
       return list.map((pokemon: any) => {
         return returnCardDetail(pokemon);
       })
     }
     if (page === 1) {
-    return list.slice(0, 12).map((pokemon: any) => {
-      return returnCardDetail(pokemon);
-    })
+      return list.slice(0, 12).map((pokemon: any) => {
+        return returnCardDetail(pokemon);
+      })
     }
     else if (page === 2) {
       return list.slice(12, 24).map((pokemon: any) => {
-       return returnCardDetail(pokemon);
+        return returnCardDetail(pokemon);
       })
     }
   }
@@ -113,16 +123,16 @@ function handleCardLoad(list: any[], loading: boolean = false, page: number) {
 
 export function returnCardDetail(pokemon: any) {
   return (
-  <CardComponent
-    key={pokemon.name}
-    name={pokemon.name}
-    imageUrl={pokemon.imageUrl}
-    number={pokemon.number}
-    type={pokemon.type}
-  />
+    <CardComponent
+      key={capitalize(pokemon.name)}
+      name={capitalize(pokemon.name)}
+      imageUrl={pokemon.imageUrl}
+      number={formatNumber(pokemon.number)}
+      type={pokemon.type}
+    />
   )
 }
 
 
-        
+
 
