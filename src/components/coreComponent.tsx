@@ -1,6 +1,6 @@
 "user client";
 
-import { fetchCategory, fetchPokemonData, fetchPokemonGender, fetchPokemonList, fetchWeaknesses, fetchPokemonDescription } from "../services/apiServices";
+import { fetchCategory, fetchPokemonData, fetchPokemonGender, fetchPokemonList, fetchWeaknesses, fetchPokemonDescription, fetchAbility } from "../services/apiServices";
 import { capitalize } from "../utils/capitalHelper";
 
 
@@ -24,6 +24,13 @@ async function displayPokemonDetails(pokemonName: string, pokemonId: number): Pr
     const category = await fetchCategory(pokemonId);
     const weaknesses = await fetchWeaknesses(pokemon.types.map((typeInfo: any) => typeInfo.type.name));
     const description = await fetchPokemonDescription(pokemonId);
+    const abilities = await Promise.all(pokemon.abilities.map(async (abilityInfo: any) => {
+        const abilityData = await fetchAbility(abilityInfo.ability.name);
+        return {
+            name: abilityInfo.ability.name,
+            description: abilityData
+        };
+    }));
     try {
         return {
             // Basic Info
@@ -35,7 +42,7 @@ async function displayPokemonDetails(pokemonName: string, pokemonId: number): Pr
             // SideCard Info
             weight: pokemon.weight,
             height: pokemon.height,
-            abilities: pokemon.abilities.map((abilityInfo: any) => capitalize(abilityInfo.ability.name)),
+            abilities: abilities,
             gender: gender,
 
             // Category and Weaknesses
@@ -83,3 +90,4 @@ async function fetchPokemonDataFromList(): Promise<any> {
 };
 
 export { loadList, displayPokemonDetails, fetchPokemonDataFromList };
+

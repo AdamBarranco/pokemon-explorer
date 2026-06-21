@@ -1,5 +1,7 @@
 // Api functions to fetch data from the PokeAPI 
 
+import { version } from "os";
+
 // Api function to fetch list of pokemon this returns only name and url
 async function fetchPokemonList(): Promise<any> {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/`);
@@ -64,7 +66,7 @@ async function fetchCategory(pokemonId: number): Promise<any> {
 async function fetchPokemonDescription(pokemonId: number): Promise<string> {
     const data = await callSpeciesApi(pokemonId);
     
-    const description = data.flavor_text_entries.find((entry: any) => entry.language.name === "en")?.flavor_text || "No description available";
+    const description = data.flavor_text_entries.find((entry: any) => entry.language.name === "en" && entry.version.name === "y")?.flavor_text.replace(/\n|\f/g, " ") || "No description available";
     return description;
 }
 
@@ -76,6 +78,13 @@ async function fetchWeaknesses(types: string[]): Promise<any> {
     return weaknesses;
 }
 
+async function fetchAbility(abilityName: string): Promise<any> {
+    const response = await fetch(`https://pokeapi.co/api/v2/ability/${abilityName}`);
+    responseHandler(response);
+    const data = await response.json();
+    return data.flavor_text_entries.find((entry: any) => entry.language.name === "en" && entry.version_group.name === "diamond-pearl")?.flavor_text || "No description available";
+}
+
 
 async function fetchPokemonDetails(pokemonName: string, pokemonId: number): Promise<any> {
     const pokemon = await fetchPokemonData(pokemonName);
@@ -83,6 +92,13 @@ async function fetchPokemonDetails(pokemonName: string, pokemonId: number): Prom
     const category = await fetchCategory(pokemonId);
     const weaknesses = await fetchWeaknesses(pokemon.types.map((typeInfo: any) => typeInfo.type.name));
     const description = await fetchPokemonDescription(pokemonId);
+    const abilities = await Promise.all(pokemon.abilities.map(async (abilityInfo: any) => {
+        const abilityData = await fetchAbility(abilityInfo.ability.name);
+        return {
+            name: abilityInfo.ability.name,
+            description: abilityData
+        };
+    }));
     try {
         return {
             name: pokemon.name,
@@ -92,7 +108,8 @@ async function fetchPokemonDetails(pokemonName: string, pokemonId: number): Prom
             weaknesses: weaknesses,
             weight: pokemon.weight,
             height: pokemon.height,
-            abilities: pokemon.abilities.map((abilityInfo: any) => abilityInfo.ability.name),
+            abilities: abilities,
+
             gender: gender,
             category: category,
 
@@ -133,4 +150,4 @@ function responseHandler(response: any): void {
     }
 }
 
-export { fetchPokemonList, fetchPokemonData, fetchPokemonDataFromList, fetchPokemonDetails, fetchPokemonGender, fetchCategory, fetchWeaknesses, fetchPokemonDescription };
+export { fetchPokemonList, fetchPokemonData, fetchPokemonDataFromList, fetchPokemonDetails, fetchPokemonGender, fetchCategory, fetchWeaknesses, fetchPokemonDescription, fetchAbility };

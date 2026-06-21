@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { inter } from "../../utils/fontHelper"
 import { Progress } from "@/components/ui/progress"
+import { capitalize } from "@/src/utils/capitalHelper";
 
 type SideCardProps = {
 
@@ -27,7 +28,7 @@ type OverviewCardProps = {
 }
 type AbilityCardProps = {
 
-    abilities: string[];
+    abilities: { name: string; description: string }[];
 }
 
 type InfoCardProps = {
@@ -89,7 +90,7 @@ export function OverviewCard({ type = [], weaknesses = [] }: OverviewCardProps) 
                         <h3 className={`${inter.className} text-left text-[24px] font-semibold leading-8 tracking-[-0.025em]`}>Type</h3>
                         <div className="flex flex-wrap mb-2  py-1 gap-3">
                             {type.map((t) => (
-                                <p key={t} className={`${inter.className} text-[12px] bg-[#181A1B] text-white rounded-md px-[10px] py-[2px] gap-[10px] opacity-100`}>{t}</p>
+                                <p key={t} className={`${inter.className} text-[16px] bg-[#181A1B] text-white rounded-md px-[10px] py-[2px] gap-[10px] opacity-100`}>{t}</p>
                             ))}
                         </div>
                     </div>
@@ -97,7 +98,7 @@ export function OverviewCard({ type = [], weaknesses = [] }: OverviewCardProps) 
                         <h3 className={`${inter.className} text-left text-[24px] font-semibold leading-8 tracking-[-0.025em]`}>Weaknesses</h3>
                         <div className="flex flex-wrap mb-2  py-1 gap-3">
                             {weaknesses.map((w) => (
-                                <p key={w} className={`${inter.className} text-[12px] bg-[#181A1B] text-white rounded-md px-[10px] py-[2px] gap-[10px] opacity-100`}>{w}</p>
+                                <p key={w} className={`${inter.className} text-[16px] bg-[#181A1B] text-white rounded-md px-[10px] py-[2px] gap-[10px] opacity-100`}>{w}</p>
                             ))}
                         </div>
                     </div>
@@ -132,17 +133,20 @@ export function StatsCard({ hp, attack, defense, sAttack, sDefense, speed }: Sta
 
 }
 
-export function AbilityCard({ abilities = [] }: AbilityCardProps) {
+export function AbilityCard({ abilities = [{ name: "", description: "" }] }: AbilityCardProps) {
 
     return (
         <Card className="p-9 px-12 gap-8 rounded-xl h-full">
             <CardContent>
                 <div className="">
                     <div className="flex flex-col gap-3">
-                        <h3 className={`${inter.className} text-left text-[24px] font-semibold leading-8 tracking-[-0.025em]`}>Abilities</h3>
+                        <h3 className={`${inter.className} text-left text-[24px] font-semibold leading-8 tracking-[-0.025em]`}>Ability</h3>
                         <div className="flex flex-wrap mb-2  py-1 gap-3">
                             {abilities.map((a) => (
-                                <p key={a} className={`${inter.className} text-[12px] bg-[#181A1B] text-white rounded-md px-[10px] py-[2px] gap-[10px] opacity-100`}>{a}</p>
+                                <div key={a.name} className="flex flex-col gap-1">
+                                    <p className={`${inter.className} text-[20px] text-left `}>{capitalize(a.name)}</p>
+                                    <p className={`${inter.className} text-[16px] text-left `}>{a.description}</p>
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -158,8 +162,8 @@ export function ProgressBar({ progress }: { progress: number }) {
 
 function Stat({ stat, value }: { stat: string; value: number }) {
     return (
-        <div className="flex items-center gap-3">
-            <p className={`${inter.className} text-left w-28 text-sm`}>{stat}:</p>
+        <div className="flex items-center gap-2">
+            <p className={`${inter.className} text-[20px] text-left w-48 text-sm font-semibold`}>{stat}:</p>
             <div className="flex-1">
                 <ProgressBar progress={value} />
             </div>
