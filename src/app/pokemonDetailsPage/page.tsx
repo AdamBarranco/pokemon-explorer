@@ -65,10 +65,11 @@ export default function PokemonDetailsPage() {
                         <>
                             {/* top bar and section */}
 
-                            <div className="w-full">
+                            <div className="h-[380px] w-full relative">
 
-                                <div className=" dark:bg-[#181A1B]">
-                                    <div className="h-1/2 bg-[#F5F5F5]">
+                                <div className=" h-[240px] bg-[#18181B33] "></div>
+
+                                    <div className="absolute top-[120px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
 
                                         <div className=" flex flex-col items-center justify-center gap-4 ">
                                             <div className="w-[208px] h-[208px] rounded-full overflow-hidden bg-white flex items-center justify-center ">
@@ -76,7 +77,8 @@ export default function PokemonDetailsPage() {
 
                                             </div>
 
-                                            <div className="text-lg font-medium text-center flex flex-row gap-2">
+                                            <div className="flex items-center gap-2">
+
                                                 <p className={`${inter.className} flex text-lg font-medium text-[30px]`}> {pokemonDetails?.name }</p>
                                                 <p className={`${inter.className} flex text-lg font-medium text-[30px] text-[#71717A]`}>{"#" + pokemonDetails?.number}</p>
 
@@ -84,7 +86,7 @@ export default function PokemonDetailsPage() {
 
                                         </div>
                                     </div>
-                                </div>
+                                
                             </div>
 
                             {/* info card */}
