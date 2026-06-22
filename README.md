@@ -46,7 +46,7 @@ To display pokemon images, I retrieved the sprite URLs from the API and formatte
 
 The loading state indicator was implemented using the useState hook through setLoading. This state was used alongside the Shadcn Spinner component to provide visual feedback while data was loading. A delay was also added to demonstrate the spinner during development; however, this would be removed in a production environment.
 
-## Self-Reflection & Potential Improvements (Optional but Valued)
+## Self-Reflection & Potential Improvements 
 
 The part of the solution I am most proud of is the structuring and formatting of the pokemon data. Organising the data in this way made it much easier to implement within the UI components.
 
