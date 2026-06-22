@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { inter } from "../../utils/fontHelper"
 import { redirect } from "next/navigation";
-import { useState } from "react";
 
 interface ButtonProps {
   page: number;
@@ -28,9 +27,7 @@ export function BackBtn({ page, setPage }: ButtonProps) {
         setPage(1);
         console.log("Back button clicked. Current page:", page);
       }}>
-        <ArrowLeftIcon className="w-4 h-4" />
-        Back
-      </Button>
+        <ArrowLeftIcon className="w-4 h-4" />Back</Button>
     );
   }
   return (
@@ -41,9 +38,7 @@ export function BackBtn({ page, setPage }: ButtonProps) {
       }
       console.log("Back button clicked. Current page:", page);
     }}>
-      <ArrowLeftIcon className="w-4 h-4" />
-      Back
-    </Button>
+      <ArrowLeftIcon className="w-4 h-4" />Back</Button>
   );
 }
 
@@ -77,7 +72,6 @@ export function SearchBtn({ pokemonName, pokemonListState, searchPokemonList, se
           } else if (!foundPokemon && setSearchPokemonList) {
             setNotFound(true);
           }
-          
         }
       }}>
       Search
@@ -90,7 +84,5 @@ export function ReturnBtn() {
     onClick={() => {
       redirect("/landingPage");
     }}>
-    <ArrowLeftIcon className="w-4 h-4" />
-    Return Home
-  </Button>);
+    <ArrowLeftIcon className="w-4 h-4" />Return Home</Button>);
 }

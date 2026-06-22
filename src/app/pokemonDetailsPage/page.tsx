@@ -9,6 +9,8 @@ import { ReturnBtn } from "../../components/button/buttonComponent"
 import { AbilityCard, InfoCard, OverviewCard, SideCard, StatsCard } from "../../components/card/statsCardComponent"
 import SpinnerComponent from "@/src/components/spinner/spinnerComponent";
 
+
+// Pokemon details page - displays detailed information about a specific Pokemon
 export default function PokemonDetailsPage() {
 
     const [loading, setLoading] = useState<boolean>(false);

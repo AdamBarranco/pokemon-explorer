@@ -8,7 +8,6 @@ import { inter } from "../utils/fontHelper"
 import SpinnerComponent from "../components/spinner/spinnerComponent"
 import { useState, useEffect } from "react";
 import { capitalize } from "../utils/capitalHelper";
-import { notFound } from "next/navigation";
 import { formatNumber } from "../utils/numberFormatHelper";
 
 export default function LandingPage() {
@@ -79,6 +78,7 @@ export default function LandingPage() {
             }
           </div>
         </div>
+        
         <div className="flex  gap-3 justify-center mt-8">
           <BackBtn page={page} setPage={setPage} />
           <NextBtn page={page} setPage={setPage} />
