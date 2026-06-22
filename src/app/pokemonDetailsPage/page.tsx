@@ -13,7 +13,7 @@ import SpinnerComponent from "@/src/components/spinner/spinnerComponent";
 // Pokemon details page - displays detailed information about a specific Pokemon
 export default function PokemonDetailsPage() {
 
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const [pokemonDetails, setPokemonDetails] = useState<any>(null);
 
     const searchParams = useSearchParams();
